@@ -1,0 +1,19 @@
+# Compiled binaries & objects
+*.exe
+*.o
+*.obj
+
+# Local database & data persistence files
+*.dat
+*.csv
+
+# Editor/Cache files
+.vscode/
+.cache/
+build/
+
+# Compilation logs & temporary output files
+output.txt
+link_out.txt
+compile_out.txt
+build_errors.txt
