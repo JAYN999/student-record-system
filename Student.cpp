@@ -182,15 +182,15 @@ std::string Student::unescapeCsv(const std::string& s) {
 
 std::string Student::toCSV() const {
     std::ostringstream ss;
-    ss << m_id              << ","
-       << escapeCsv(m_name) << ","
-       << m_age             << ","
-       << m_gender          << ","
-       << m_email           << ","
-       << m_phone           << ","
-       << m_department      << ","
-       << m_semester        << ","
-       << m_enrollDate      << ","
+    ss << m_id                 << ","
+       << escapeCsv(m_name)    << ","
+       << m_age                << ","
+       << escapeCsv(m_gender)  << ","
+       << escapeCsv(m_email)   << ","
+       << escapeCsv(m_phone)   << ","
+       << escapeCsv(m_department) << ","
+       << m_semester           << ","
+       << escapeCsv(m_enrollDate) << ","
        << (m_active ? 1 : 0);
 
     for (const auto& c : m_courses) {
