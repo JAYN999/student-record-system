@@ -18,6 +18,10 @@ Student::Student(int id, const std::string& name, int age,
       m_semester(semester), m_enrollDate(enrollDate), m_active(true) {}
 
 void Student::addCourse(const Course& c) {
+    if (c.marks < 0.0 || c.marks > 100.0)
+        throw std::out_of_range("Course marks must be between 0 and 100.");
+    if (c.credits < 1 || c.credits > 6)
+        throw std::out_of_range("Course credits must be between 1 and 6.");
     if (hasCourse(c.code))
         throw std::runtime_error("Course '" + c.code + "' already enrolled.");
     m_courses.push_back(c);
@@ -245,7 +249,7 @@ Student Student::fromCSV(const std::string& line) {
                 c.name    = unescapeCsv(parts[1]);
                 c.marks   = std::stod(parts[2]);
                 c.credits = std::stoi(parts[3]);
-                s.m_courses.push_back(c);
+                s.addCourse(c);
             }
         }
     }
