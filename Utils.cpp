@@ -98,12 +98,17 @@ bool isValidEmail(const std::string& email) {
 bool isValidDate(const std::string& date) {
     const std::regex pattern(R"(\d{4}-\d{2}-\d{2})");
     if (!std::regex_match(date, pattern)) return false;
-    int y = std::stoi(date.substr(0,4));
-    int m = std::stoi(date.substr(5,2));
-    int d = std::stoi(date.substr(8,2));
-    if (m < 1 || m > 12 || d < 1 || d > 31) return false;
-    if (y < 1900 || y > 2100) return false;
-    return true;
+
+    const int year = std::stoi(date.substr(0, 4));
+    const int month = std::stoi(date.substr(5, 2));
+    const int day = std::stoi(date.substr(8, 2));
+    if (year < 1900 || year > 2100 || month < 1 || month > 12 || day < 1)
+        return false;
+
+    const bool leapYear = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    const int daysInMonth[] = {31, leapYear ? 29 : 28, 31, 30, 31, 30,
+                               31, 31, 30, 31, 30, 31};
+    return day <= daysInMonth[month - 1];
 }
 
 bool isValidPhone(const std::string& phone) {
