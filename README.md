@@ -1,54 +1,58 @@
 # Student Record Management System (C++)
 
-A robust, object-oriented Student Record Management System developed in C++17. Designed as a demonstration of clean code, architectural patterns, and functional richness for a professional software engineering portfolio.
+A console-based student record management system written in **C++17**. It stores student records in a local text/CSV-style data file and provides student, course, search, reporting and export features.
 
-## 🚀 Key Features
+## Features
 
-- **Full CRUD Support**: Manage student profiles with persistent storage.
-- **Academic Tracking**: Comprehensive course management with real-time GPA and academic standing calculation.
-- **Data Persistence**: Robust file-based database using CSV format for transparency and interoperability.
-- **Rich Analytics**:
-  - GPA distribution and standard deviation.
-  - Department-level performance metrics.
-  - Academic probation tracking.
-- **Advanced Searching & Sorting**: Multi-field search (ID, Name, Dept, Email) and flexible sorting (GPA, Name, ID).
-- **Modern CLI Interface**: A polished, color-coded terminal UI with robust input validation.
-- **Portability**: Statically linked build for cross-platform Windows deployment.
+- Add, update, search and list student records
+- Soft-delete, restore and permanently delete records
+- Add, update and remove courses for a student
+- Calculate weighted GPA, average marks and academic standing
+- Search by ID, name, department, email, phone and course code
+- Sort by ID, name, GPA, department, semester and age
+- Generate summary reports and export student data to CSV
+- Validate common console inputs and handle malformed data-file rows
 
-## 🛠️ Technology Stack
+## Technology
 
-- **Language**: C++17
-- **Compiler**: GCC (MinGW-w64 / MSYS2 UCRT64)
-- **Concepts**: OOP, STL Containers, File I/O, Exception Handling, Lambda Expressions.
-- **Build System**: Windows Batch Script (included).
+- **Language:** C++17
+- **Concepts:** Classes and objects, encapsulation, STL containers, algorithms, file I/O, exceptions and lambda functions
+- **Persistence:** Local file-based records; CSV export
+- **Build:** CMake, Makefile and a Windows batch build script
+- **Compiler:** GCC/MinGW-w64 or another C++17-compatible compiler
 
-## 📂 Project Structure
+## Build
 
-- `main.cpp`: CLI Menu system and feature orchestration.
-- `Student.h/cpp`: The core entity model (Encapsulation).
-- `StudentManager.h/cpp`: Business logic and collection management (Abstraction).
-- `Utils.h/cpp`: Cross-cutting concerns like validation and console helpers.
-- `Common.h`: Shared globally constant definitions (UI Colors, etc.).
-- `build.bat`: Automated build pipeline.
+### CMake (recommended)
 
-## 🛠️ Build Instructions
-
-### Prerequisites
-- **MinGW-w64** (via MSYS2 recommended).
-- Ensure `g++` is in your system path or edit `build.bat` to point to your compiler.
-
-### Building
-Run the included build script:
-```powershell
-./build.bat
+```bash
+cmake -S . -B build
+cmake --build build
 ```
 
-### Running
-Launch the compiled executable:
-```powershell
-./StudentRecordSystem.exe
-```
+Run the executable produced in the `build` directory.
 
-## 📄 License
+### Windows batch script
 
-All rights reserved. This repository and its code are for personal portfolio review and viewing purposes only. No permission is granted to copy, modify, distribute, or use this code for any other purpose.
+The included `build.bat` is configured for an MSYS2 UCRT64 installation at `C:\msys64\ucrt64\bin\g++.exe`. Update that path if your compiler is installed elsewhere, or use CMake instead.
+
+## Data
+
+The program reads and writes its local data file relative to the current working directory. Keep a backup of this file before testing destructive operations. The CSV export is intended for spreadsheet use and quotes text fields containing commas, quotes or line breaks.
+
+## Project structure
+
+- `main.cpp`: menu and application flow
+- `Student.h/.cpp`: student and course data, grade calculations and record serialization
+- `StudentManager.h/.cpp`: record operations, search, sorting, reports and persistence
+- `Utils.h/.cpp`: console input and validation helpers
+- `Common.h`: shared terminal color definitions
+- `CMakeLists.txt`, `Makefile`, `build.bat`: build options
+
+## Scope
+
+This is a learning/portfolio console application, not a university information system or a production database service. Its local file storage is not a substitute for a relational database.
+
+## License
+
+All rights reserved. This repository and its code are for personal portfolio review and viewing purposes only.
