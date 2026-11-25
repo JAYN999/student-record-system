@@ -236,8 +236,8 @@ void StudentManager::printStats() const {
     for (const auto* s : active) {
         double g = s->calculateGPA();
         totalGPA += g;
-        if (g > maxGPA) { maxGPA = g; topS = s; }
-        if (g < minGPA) { minGPA = g; botS = s; }
+        if (!topS || g > maxGPA) { maxGPA = g; topS = s; }
+        if (!botS || g < minGPA) { minGPA = g; botS = s; }
     }
     double avgGPA = totalGPA / active.size();
     double variance = 0.0;
@@ -319,21 +319,36 @@ int StudentManager::loadFromFile(const std::string& filename) {
 void StudentManager::exportCSV(const std::string& filename) const {
     std::ofstream ofs(filename);
     if (!ofs) throw std::runtime_error("Cannot open: " + filename);
+
+    // Quote CSV text fields and escape embedded quotes so commas/newlines
+    // in names or departments do not shift columns in spreadsheet software.
+    const auto csvEscape = [](const std::string& value) {
+        std::string escaped = "\"";
+        for (char ch : value) {
+            if (ch == '\"') escaped += '\"';
+            escaped += ch;
+        }
+        escaped += '\"';
+        return escaped;
+    };
+
     ofs << "ID,Name,Age,Gender,Email,Phone,Department,Semester,EnrollDate,Active,GPA,Standing\n";
     for (const auto& s : m_students) {
-        ofs << s.getId()          << ","
-            << s.getName()        << ","
-            << s.getAge()         << ","
-            << s.getGender()      << ","
-            << s.getEmail()       << ","
-            << s.getPhone()       << ","
-            << s.getDepartment()  << ","
-            << s.getSemester()    << ","
-            << s.getEnrollDate()  << ","
-            << (s.isActive() ? "Yes" : "No") << ","
+        ofs << s.getId()                         << ","
+            << csvEscape(s.getName())            << ","
+            << s.getAge()                        << ","
+            << csvEscape(s.getGender())          << ","
+            << csvEscape(s.getEmail())           << ","
+            << csvEscape(s.getPhone())           << ","
+            << csvEscape(s.getDepartment())      << ","
+            << s.getSemester()                   << ","
+            << csvEscape(s.getEnrollDate())      << ","
+            << (s.isActive() ? "Yes" : "No")     << ","
             << std::fixed << std::setprecision(2) << s.calculateGPA() << ","
-            << s.academicStanding() << "\n";
+            << csvEscape(s.academicStanding()) << "\n";
     }
+
+    if (!ofs) throw std::runtime_error("Failed while writing CSV file: " + filename);
 }
 
 size_t StudentManager::count(bool activeOnly) const {
